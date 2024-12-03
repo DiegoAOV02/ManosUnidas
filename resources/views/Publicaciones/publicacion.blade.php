@@ -80,9 +80,7 @@
                     <button class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100">Agregar al carrito</button>
                 </div>
             </div>
-        </section>
-        
-        
+        </section>        
 
     <!-- Ventajas -->
     <section
