@@ -164,8 +164,6 @@
             </div>
         </section>
 
-
-
         <!-- Ventajas -->
         <section
             class="bg-gradient-to-r from-[#003152] to-[#0166A5] text-white fixed bottom-0 left-0 right-0 p-6 flex justify-around items-center text-center z-10">
