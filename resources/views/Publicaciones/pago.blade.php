@@ -7,92 +7,13 @@
     <title>Pagos</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Script para SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gray-100">
     <!-- Navbar -->
-    <header class="bg-gradient-to-r from-[#003152] to-[#0166A5] text-white py-4 px-8">
-        <div class="container mx-auto flex items-center">
-            <!-- Logo -->
-            <div class="flex items-center gap-4">
-                <a href="/dashboard" class="flex items-center gap-4">
-                    <img src="img/logo.png" alt="Logo Manos Unidas" class="w-12 h-12">
-                    <h1 class="text-2xl font-bold">ManosUnidas</h1>
-                </a>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="relative ml-6 flex-1 max-w-[300px]">
-                <input type="text" placeholder="Buscar producto..."
-                    class="w-full p-2 pr-10 pl-4 rounded-lg text-gray-700 placeholder-gray-500">
-                <span class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <img src="img/buscar.png" alt="Buscar" class="w-5 h-5">
-                </span>
-            </div>
-
-            <!-- Right-side Options -->
-            <div class="flex items-center gap-14 ml-auto">
-                <!-- Categorías -->
-                <div class="relative z-50">
-                    <button class="hover:underline" onclick="toggleDropdown('categories-dropdown')">Categorías</button>
-                    <div id="categories-dropdown"
-                        class="hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg z-50">
-                        <ul class="p-2 space-y-2 text-sm">
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Belleza y Cuidado Personal</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Construcción</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Electrodomésticos</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Hogar y Muebles</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Moda</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Supermercado</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Tecnología</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Vehículos</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Carrito -->
-                <div>
-                    <a href="#" class="hover:underline">Carrito</a>
-                </div>
-
-
-                <!-- Perfil -->
-                <div class="relative z-50">
-                    <button class="hover:underline" onclick="toggleDropdown('profile-dropdown')">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            class="w-8 h-8">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 14a4 4 0 100-8 4 4 0 000 8zM6 21v-1a4 4 0 014-4h4a4 4 0 014 4v1" />
-                        </svg>
-                    </button>
-                    <div id="profile-dropdown"
-                        class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg z-50">
-                        <ul class="p-2 space-y-2 text-sm">
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full text-left text-gray-800">
-                                        Cerrar sesión
-                                    </button>
-                                </form>
-                            </li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/direcciones"
-                                    class="block text-gray-800">Direcciones</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/editar-perfil"
-                                    class="block text-gray-800">Editar perfil</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/pedidos"
-                                    class="block text-gray-800">Pedidos</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/perfil"
-                                    class="block text-gray-800">Perfil</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/tarjetas"
-                                    class="block text-gray-800">Tarjetas</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/vender"
-                                    class="block text-gray-800">VENDER</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('components.navbar')
 
     <main class="container mx-auto py-14 px-8">
         <!-- Proceder al pago -->
@@ -107,7 +28,7 @@
                 <p class="text-gray-600 mb-2">Diego A. Ortiz</p>
                 <p class="text-gray-600">C Lomas del Pedregal 380 Fracc Lomas de Calamaco, Ciudad Victoria, Tamaulipas
                     87018</p>
-                <button
+                <button  onclick="window.location.href='{{ route('direcciones') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700 w-full">Modificar</button>
             </div>
 
@@ -115,10 +36,10 @@
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">2. Método de pago</h3>
                 <p class="text-gray-600 mb-4">Pagar con Visa 3217</p>
-                <button
+                <button onclick="window.location.href='{{ route('tarjetas') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full mb-2">Agregar
                     otra tarjeta</button>
-                <button
+                <button onclick="editarTarjeta()"
                     class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 w-full">Modificar</button>
             </div>
 
@@ -175,6 +96,57 @@
         function toggleDropdown(id) {
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
+        }
+
+        function editarTarjeta() {
+            Swal.fire({
+                title: '<h2 class="text-lg font-bold text-gray-800">Editar Tarjeta</h2>',
+                html: `
+             <form id="tarjetaForm" class="grid grid-cols-2 gap-4 text-left w-full">
+            <div class="col-span-2">
+                <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre del Titular</label>
+                <input type="text" id="nombre" class="swal2-input w-62" placeholder="Ej. Juan Pérez" required>
+            </div>
+            <div class="col-span-2">
+                <label for="numeroTarjeta" class="block text-sm font-semibold text-gray-700">Número de Tarjeta</label>
+                <input type="text" id="numeroTarjeta" class="swal2-input w-62" placeholder="Ej. 1234 5678 9012 3456" maxlength="16" required>
+            </div>
+            <div>
+                <label for="fechaExp" class="block text-sm font-semibold text-gray-700">Fecha de Expiración</label>
+                <input type="text" id="fechaExp" class="swal2-input w-32" placeholder="Ej. 12/25" maxlength="5" required>
+            </div>
+            <div>
+                <label for="ccv" class="block text-sm font-semibold text-gray-700">CCV</label>
+                <input type="text" id="ccv" class="swal2-input w-24" placeholder="Ej. 123" maxlength="3" required>
+            </div>
+        </form>
+        `,
+                confirmButtonText: 'Guardar',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                    popup: 'w-full max-w-xl rounded-lg p-6',
+                    confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700',
+                    cancelButton: 'border border-gray-300 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-100',
+                },
+                preConfirm: () => {
+                    const datos = {
+                        nombre: document.getElementById('nombre').value,
+                        numeroTarjeta: document.getElementById('numeroTarjeta').value,
+                        fechaExp: document.getElementById('fechaExp').value,
+                        ccv: document.getElementById('ccv').value,
+                    };
+                    if (Object.values(datos).some((val) => val.trim() === '')) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios');
+                    }
+                    return datos;
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('Tarjeta actualizada:', result.value);
+                    Swal.fire('¡Tarjeta actualizada!', '', 'success');
+                }
+            });
         }
     </script>
 </body>
