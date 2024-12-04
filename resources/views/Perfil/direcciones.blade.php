@@ -7,92 +7,13 @@
     <title>Direcciones</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Script para SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gray-100">
     <!-- Navbar -->
-    <header class="bg-gradient-to-r from-[#003152] to-[#0166A5] text-white py-4 px-8">
-        <div class="container mx-auto flex items-center">
-            <!-- Logo -->
-            <div class="flex items-center gap-4">
-                <a href="/dashboard" class="flex items-center gap-4">
-                    <img src="img/logo.png" alt="Logo Manos Unidas" class="w-12 h-12">
-                    <h1 class="text-2xl font-bold">ManosUnidas</h1>
-                </a>
-            </div>
-
-            <!-- Search Bar -->
-            <div class="relative ml-6 flex-1 max-w-[300px]">
-                <input type="text" placeholder="Buscar producto..."
-                    class="w-full p-2 pr-10 pl-4 rounded-lg text-gray-700 placeholder-gray-500">
-                <span class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <img src="img/buscar.png" alt="Buscar" class="w-5 h-5">
-                </span>
-            </div>
-
-            <!-- Right-side Options -->
-            <div class="flex items-center gap-14 ml-auto">
-                <!-- Categorías -->
-                <div class="relative z-50">
-                    <button class="hover:underline" onclick="toggleDropdown('categories-dropdown')">Categorías</button>
-                    <div id="categories-dropdown"
-                        class="hidden absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg z-50">
-                        <ul class="p-2 space-y-2 text-sm">
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Belleza y Cuidado Personal</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Construcción</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Electrodomésticos</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Hogar y Muebles</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Moda</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Supermercado</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Tecnología</li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">Vehículos</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Carrito -->
-                <div>
-                    <a href="#" class="hover:underline">Carrito</a>
-                </div>
-
-
-                <!-- Perfil -->
-                <div class="relative z-50">
-                    <button class="hover:underline" onclick="toggleDropdown('profile-dropdown')">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                            class="w-8 h-8">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 14a4 4 0 100-8 4 4 0 000 8zM6 21v-1a4 4 0 014-4h4a4 4 0 014 4v1" />
-                        </svg>
-                    </button>
-                    <div id="profile-dropdown"
-                        class="hidden absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg z-50">
-                        <ul class="p-2 space-y-2 text-sm">
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded">
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit" class="block w-full text-left text-gray-800">
-                                        Cerrar sesión
-                                    </button>
-                                </form>
-                            </li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/direcciones"
-                                    class="block text-gray-800">Direcciones</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/editar-perfil"
-                                    class="block text-gray-800">Editar perfil</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/pedidos"
-                                    class="block text-gray-800">Pedidos</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/perfil"
-                                    class="block text-gray-800">Perfil</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/tarjetas"
-                                    class="block text-gray-800">Tarjetas</a></li>
-                            <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/vender"
-                                    class="block text-gray-800">VENDER</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
+    @include('components.navbar')
 
     <main class="container mx-auto py-14 px-8 text-center">
         <!-- Botón de Regresar -->
@@ -102,12 +23,9 @@
             <span class="text-lg font-medium">Regresar</span>
         </button>
 
-        <!-- Título -->
-        <h2 class="text-2xl font-bold text-gray-800 mb-8">Mis direcciones</h2>
-
-        <!-- Sección de Direcciones -->
-        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Tarjeta para agregar dirección -->
+        <h1 class="text-2xl font-bold text-gray-800 mb-8">Mis direcciones</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Botón para agregar dirección -->
             <div
                 class="bg-white border border-gray-300 rounded-lg shadow-md p-6 flex flex-col items-center justify-center">
                 <button onclick="agregarDireccion()"
@@ -120,21 +38,21 @@
                 </button>
             </div>
 
-            <!-- Dirección Existente -->
+            <!-- Dirección existente -->
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Diego A. Ortiz</h3>
                 <p class="text-gray-600 mb-2">C Lomas del Pedregal 380 Fracc Lomas de Calamaco</p>
                 <p class="text-gray-600 mb-2">Ciudad Victoria, Tamaulipas, 87018, México</p>
                 <p class="text-gray-600 mb-4">Número de teléfono: 8127178165</p>
                 <div class="flex gap-4">
-                    <button
-                        class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-1/2">Editar
-                        dirección</button>
+                    <!-- Botón de Editar -->
+                    <button onclick="editarDireccion()"
+                        class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-1/2">Editar</button>
                     <button
                         class="border border-red-600 text-red-600 font-bold py-2 px-4 rounded-lg hover:bg-red-100 w-1/2">Eliminar</button>
                 </div>
             </div>
-        </section>
+        </div>
 
         <!-- Ventajas -->
         <section
@@ -142,21 +60,22 @@
             <div class="flex flex-col items-center">
                 <img src="img/tarjeta.png" alt="Elige cómo pagar" class="w-12 h-12 mb-2">
                 <p class="font-bold">Elige cómo pagar</p>
-                <p class="text-sm">Puedes pagar con tarjeta, débito, efectivo o con Meses sin Tarjeta.</p>
+                <p class="text-sm text-center">Puedes pagar con tarjeta, débito, efectivo o con Meses sin Tarjeta.</p>
             </div>
             <div class="border-l border-white mx-4 h-12"></div>
             <div class="flex flex-col items-center">
                 <img src="img/camion.png" alt="Envío gratis" class="w-12 h-12 mb-2">
                 <p class="font-bold">Envío gratis en tu primer compra</p>
-                <p class="text-sm">Aprovecha este beneficio en millones de productos.</p>
+                <p class="text-sm text-center">Aprovecha este beneficio en millones de productos.</p>
             </div>
             <div class="border-l border-white mx-4 h-12"></div>
             <div class="flex flex-col items-center">
                 <img src="img/verificado.png" alt="Seguridad en tus compras" class="w-12 h-12 mb-2">
                 <p class="font-bold">Seguridad en tus compras</p>
-                <p class="text-sm">Tus compras están aseguradas para regresarte tu dinero.</p>
+                <p class="text-sm text-center">Tus compras están aseguradas para regresarte tu dinero.</p>
             </div>
         </section>
+
     </main>
 
     <script>
@@ -164,7 +83,139 @@
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
-    </script>
-</body>
 
+        function agregarDireccion() {
+            Swal.fire({
+                title: '<h2 class="text-lg font-bold text-gray-800">Agregar dirección</h2>',
+                html: `
+            <form id="direccionForm" class="grid grid-cols-2 gap-4 text-left">
+                <div>
+                    <label for="calle" class="block text-sm font-semibold text-gray-700">Calle</label>
+                    <input type="text" id="calle" class="swal2-input" placeholder="Ej. Av. Principal" required>
+                </div>
+                <div>
+                    <label for="numero" class="block text-sm font-semibold text-gray-700">Número</label>
+                    <input type="text" id="numero" class="swal2-input" placeholder="Ej. 123" required>
+                </div>
+                <div>
+                    <label for="codigoPostal" class="block text-sm font-semibold text-gray-700">Código Postal</label>
+                    <input type="text" id="codigoPostal" class="swal2-input" placeholder="Ej. 87000" required>
+                </div>
+                <div>
+                    <label for="colonia" class="block text-sm font-semibold text-gray-700">Colonia/Fracc.</label>
+                    <input type="text" id="colonia" class="swal2-input" placeholder="Ej. Lomas" required>
+                </div>
+                <div>
+                    <label for="ciudad" class="block text-sm font-semibold text-gray-700">Ciudad</label>
+                    <input type="text" id="ciudad" class="swal2-input" placeholder="Ej. Ciudad Victoria" required>
+                </div>
+                <div>
+                    <label for="estado" class="block text-sm font-semibold text-gray-700">Estado</label>
+                    <input type="text" id="estado" class="swal2-input" placeholder="Ej. Tamaulipas" required>
+                </div>
+                <div class="col-span-2">
+                    <label for="pais" class="block text-sm font-semibold text-gray-700">País</label>
+                    <input type="text" id="pais" class="swal2-input" placeholder="Ej. México" required>
+                </div>
+            </form>
+        `,
+                confirmButtonText: 'Guardar',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                    popup: 'w-full max-w-4xl rounded-lg p-6',
+                    confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700',
+                    cancelButton: 'border border-gray-300 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-100',
+                },
+                preConfirm: () => {
+                    const datos = {
+                        calle: document.getElementById('calle').value,
+                        numero: document.getElementById('numero').value,
+                        codigoPostal: document.getElementById('codigoPostal').value,
+                        colonia: document.getElementById('colonia').value,
+                        ciudad: document.getElementById('ciudad').value,
+                        estado: document.getElementById('estado').value,
+                        pais: document.getElementById('pais').value,
+                    };
+                    if (Object.values(datos).some((val) => val.trim() === '')) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios');
+                    }
+                    return datos;
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('Dirección agregada:', result.value);
+                    Swal.fire('¡Dirección agregada!', '', 'success');
+                }
+            });
+        }
+
+        function editarDireccion() {
+            Swal.fire({
+                title: '<h2 class="text-lg font-bold text-gray-800">Editar dirección</h2>',
+                html: `
+            <form id="direccionForm" class="grid grid-cols-2 gap-4 text-left">
+                <div>
+                    <label for="calle" class="block text-sm font-semibold text-gray-700">Calle</label>
+                    <input type="text" id="calle" class="swal2-input" value="Calle Actual" required>
+                </div>
+                <div>
+                    <label for="numero" class="block text-sm font-semibold text-gray-700">Número</label>
+                    <input type="text" id="numero" class="swal2-input" value="123" required>
+                </div>
+                <div>
+                    <label for="codigoPostal" class="block text-sm font-semibold text-gray-700">Código Postal</label>
+                    <input type="text" id="codigoPostal" class="swal2-input" value="87000" required>
+                </div>
+                <div>
+                    <label for="colonia" class="block text-sm font-semibold text-gray-700">Colonia/Fracc.</label>
+                    <input type="text" id="colonia" class="swal2-input" value="Fraccionamiento Lomas" required>
+                </div>
+                <div>
+                    <label for="ciudad" class="block text-sm font-semibold text-gray-700">Ciudad</label>
+                    <input type="text" id="ciudad" class="swal2-input" value="Ciudad Victoria" required>
+                </div>
+                <div>
+                    <label for="estado" class="block text-sm font-semibold text-gray-700">Estado</label>
+                    <input type="text" id="estado" class="swal2-input" value="Tamaulipas" required>
+                </div>
+                <div class="col-span-2">
+                    <label for="pais" class="block text-sm font-semibold text-gray-700">País</label>
+                    <input type="text" id="pais" class="swal2-input" value="México" required>
+                </div>
+            </form>
+        `,
+                confirmButtonText: 'Guardar',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                customClass: {
+                    popup: 'w-full max-w-4xl rounded-lg p-6',
+                    confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700',
+                    cancelButton: 'border border-gray-300 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-100',
+                },
+                preConfirm: () => {
+                    const datos = {
+                        calle: document.getElementById('calle').value,
+                        numero: document.getElementById('numero').value,
+                        codigoPostal: document.getElementById('codigoPostal').value,
+                        colonia: document.getElementById('colonia').value,
+                        ciudad: document.getElementById('ciudad').value,
+                        estado: document.getElementById('estado').value,
+                        pais: document.getElementById('pais').value,
+                    };
+                    if (Object.values(datos).some((val) => val.trim() === '')) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios');
+                    }
+                    return datos;
+                },
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log('Dirección editada:', result.value);
+                    Swal.fire('¡Dirección actualizada!', '', 'success');
+                }
+            });
+        }
+    </script>
+
+</body>
 </html>
