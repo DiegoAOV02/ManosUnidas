@@ -83,8 +83,6 @@
                         </li>
                         <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/direcciones"
                                 class="block text-gray-800">Direcciones</a></li>
-                        <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/perfil"
-                                class="block text-gray-800">Editar perfil</a></li>
                         <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/compras"
                                 class="block text-gray-800">Mis compras</a></li>
                         <li class="hover:bg-blue-100 px-2 py-1 rounded"><a href="/perfil"
