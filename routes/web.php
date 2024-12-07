@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TarjetaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -59,10 +60,18 @@ Route::get('/misVentas', function () {
     return view('ventas/misVentas');
 })->middleware(['auth', 'verified'])->name('misVentas');
 
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('Perfil/tarjetas', [TarjetaController::class, 'index'])->name('tarjetas.index');
+    Route::post('Perfil/tarjetas', [TarjetaController::class, 'store'])->name('tarjetas.store');
+    Route::put('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'update'])->name('tarjetas.update');
+    Route::delete('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'destroy'])->name('tarjetas.destroy');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 
 require __DIR__.'/auth.php';
