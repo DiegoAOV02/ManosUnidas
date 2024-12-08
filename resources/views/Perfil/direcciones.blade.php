@@ -62,8 +62,12 @@
 
         @include('components.ventajas')
     </main>
-
     <script>
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.classList.toggle('hidden');
+        }
+        
         function agregarDireccion() {
             Swal.fire({
                 title: '<h2 class="text-lg font-bold text-gray-800">Agregar dirección</h2>',
