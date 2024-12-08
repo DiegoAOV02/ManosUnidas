@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tarjeta extends Model
 {
+    protected $table = 'tarjetas';
+    
     protected $fillable = [
         'user_id',
         'nombre_titular',
@@ -13,9 +15,4 @@ class Tarjeta extends Model
         'fecha_expiracion',
         'ccv'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

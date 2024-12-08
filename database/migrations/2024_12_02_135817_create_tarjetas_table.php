@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nombre_titular');
             $table->string('numero_tarjeta', 16);
-            $table->string('fecha_expiracion', 5);
-            $table->string('ccv', 3);
+            $table->string('fecha_expiracion');
+            $table->string('ccv');
             $table->timestamps();
         });
     }
