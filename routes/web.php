@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TarjetaController;
+use App\Http\Controllers\CategoriasController; 
+use App\Http\Controllers\BusquedaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -61,6 +63,9 @@ Route::post('/vender', [ProductoController::class, 'store'])->middleware(['auth'
 Route::get('/misVentas', function () {
     return view('ventas/misVentas');
 })->middleware(['auth', 'verified'])->name('misVentas');
+
+Route::get('/categorias', [CategoriasController::class, 'index'])->name('categorias');
+Route::get('/buscar', [BusquedaController::class, 'index'])->name('buscar');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/tarjetas', [TarjetaController::class, 'index'])->name('tarjetas.index');

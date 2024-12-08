@@ -70,7 +70,7 @@
                         <div class="col-span-2">
                             <label for="categoria" class="block text-sm font-semibold text-gray-700">Categoría</label>
                             <select id="categoria" name="categoria" class="w-full p-2 border border-gray-300 rounded-lg">
-                                <option value="Belleza">Belleza y Cuidado Personal</option>
+                                <option value="Belleza y Cuidado Personal">Belleza y Cuidado Personal</option>
                                 <option value="Construcción">Construcción</option>
                                 <option value="Electrodomésticos">Electrodomésticos</option>
                                 <option value="Hogar y Muebles">Hogar y Muebles</option>
@@ -105,7 +105,15 @@
                 </div>
             </div>
         </div>
-    </main>
+   <!-- Ventajas -->
+   @include('components.ventajas')
+</main>
+    <script>
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            dropdown.classList.toggle('hidden');
+        }
+    </script>
 </body>
 
 </html>
