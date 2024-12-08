@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\CategoriasController; 
 use App\Http\Controllers\BusquedaController;
+use App\Http\Controllers\DireccionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -72,6 +73,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('Perfil/tarjetas', [TarjetaController::class, 'store'])->name('tarjetas.store');
     Route::put('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'update'])->name('tarjetas.update');
     Route::delete('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'destroy'])->name('tarjetas.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/direcciones', [DireccionController::class, 'index'])->name('direcciones.index');
+    Route::post('/direcciones', [DireccionController::class, 'store'])->name('direcciones.store');
+    Route::put('/direcciones/{direccion}', [DireccionController::class, 'update'])->name('direcciones.update');
+    Route::delete('/direcciones/{direccion}', [DireccionController::class, 'destroy'])->name('direcciones.destroy');
 });
 
 Route::middleware('auth')->group(function () {
