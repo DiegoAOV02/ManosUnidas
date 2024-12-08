@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TarjetaController;
 use App\Http\Controllers\CategoriasController; 
 use App\Http\Controllers\BusquedaController;
+use App\Http\Controllers\DireccionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -74,11 +75,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'destroy'])->name('tarjetas.destroy');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/direcciones', [DireccionController::class, 'index'])->name('direcciones.index');
+    Route::post('/direcciones', [DireccionController::class, 'store'])->name('direcciones.store');
+    Route::put('/direcciones/{direccion}', [DireccionController::class, 'update'])->name('direcciones.update');
+    Route::delete('/direcciones/{direccion}', [DireccionController::class, 'destroy'])->name('direcciones.destroy');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cuenta', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 require __DIR__.'/auth.php';
