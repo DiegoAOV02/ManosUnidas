@@ -60,9 +60,9 @@ Route::get('/vender', function () {
 })->middleware(['auth', 'verified'])->name('vender');
 Route::post('/vender', [ProductoController::class, 'store'])->middleware(['auth', 'verified'])->name('productos.store');
 
-Route::get('/misVentas', function () {
-    return view('ventas/misVentas');
-})->middleware(['auth', 'verified'])->name('misVentas');
+Route::get('/misVentas', [ProductoController::class, 'misVentas'])->middleware(['auth', 'verified'])->name('misVentas');
+Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->middleware(['auth', 'verified'])->name('productos.destroy');
+Route::put('/productos/{producto}', [ProductoController::class, 'update'])->middleware(['auth', 'verified'])->name('productos.update');
 
 Route::get('/categorias', [CategoriasController::class, 'index'])->name('categorias');
 Route::get('/buscar', [BusquedaController::class, 'index'])->name('buscar');
