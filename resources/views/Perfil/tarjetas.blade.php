@@ -39,7 +39,7 @@
                 </button>
             </div>
 
-            @if (isset($tarjetas) && $tarjetas->count() > 0)
+            @if (isset($tarjetas) && $tarjetas->isNotEmpty())
                 @foreach ($tarjetas as $tarjeta)
                     <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 flex flex-col justify-between">
                         <div class="flex items-center gap-4">

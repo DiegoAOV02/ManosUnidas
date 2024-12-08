@@ -62,8 +62,8 @@ Route::get('/misVentas', function () {
     return view('ventas/misVentas');
 })->middleware(['auth', 'verified'])->name('misVentas');
 
-Route::middleware(['web', 'auth'])->group(function () {
-    Route::get('Perfil/tarjetas', [TarjetaController::class, 'index'])->name('tarjetas.index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/tarjetas', [TarjetaController::class, 'index'])->name('tarjetas.index');
     Route::post('Perfil/tarjetas', [TarjetaController::class, 'store'])->name('tarjetas.store');
     Route::put('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'update'])->name('tarjetas.update');
     Route::delete('Perfil/tarjetas/{tarjeta}', [TarjetaController::class, 'destroy'])->name('tarjetas.destroy');
