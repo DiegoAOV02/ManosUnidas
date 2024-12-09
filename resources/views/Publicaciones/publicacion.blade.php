@@ -51,20 +51,25 @@
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Precio más conveniente</h3>
                 <p class="text-gray-800 text-3xl font-bold">${{ number_format($producto->precio - ($producto->precio * $producto->descuento / 100), 2) }}</p>
                 <p class="text-green-500 font-bold text-lg mt-4">Llega gratis mañana</p>
-                <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
-                    @csrf
-                    <div class="flex items-center gap-8 mt-4">
-                        <label for="quantity" class="text-gray-800 font-bold">Cantidad:</label>
-                        <select name="cantidad" id="quantity" class="border border-gray-300 rounded-md p-2 w-40">
-                            @for ($i = 1; $i <= $producto->unidades_disponibles; $i++)
-                                <option value="{{ $i }}">{{ $i }} unidad{{ $i > 1 ? 'es' : '' }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <button type="submit" class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 mt-4">
-                        Agregar al carrito
-                    </button>
-                </form>                
+
+                @if ($producto->unidades_disponibles > 0)
+                    <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
+                        @csrf
+                        <div class="flex items-center gap-8 mt-4">
+                            <label for="quantity" class="text-gray-800 font-bold">Cantidad:</label>
+                            <select name="cantidad" id="quantity" class="border border-gray-300 rounded-md p-2 w-40">
+                                @for ($i = 1; $i <= $producto->unidades_disponibles; $i++)
+                                    <option value="{{ $i }}">{{ $i }} unidad{{ $i > 1 ? 'es' : '' }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <button type="submit" class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 mt-4">
+                            Agregar al carrito
+                        </button>
+                    </form>
+                @else
+                    <p class="text-red-600 font-bold mt-4">No hay unidades disponibles.</p>
+                @endif                
             </div>
         </section>
 

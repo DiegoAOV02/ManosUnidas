@@ -26,12 +26,13 @@
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">1. Dirección de envío</h3>
                 @if ($direccion)
-                    <p class="text-gray-600 mb-2">{{ $direccion->user->nombre}} {{ $direccion->user->apellido}}</p>
-                    <p class="text-gray-600">{{ $direccion->calle }}, {{ $direccion->colonia }}, {{ $direccion->numero }}</p>
+                    <p class="text-gray-600 mb-2">{{ $direccion->user->nombre }} {{ $direccion->user->apellido }}</p>
+                    <p class="text-gray-600">{{ $direccion->calle }}, {{ $direccion->colonia }},
+                        {{ $direccion->numero }}</p>
                 @else
                     <p class="text-gray-600">No tienes una dirección registrada.</p>
                 @endif
-                <button  onclick="window.location.href='{{ route('direcciones.index') }}'"
+                <button onclick="window.location.href='{{ route('direcciones.index') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700 w-full">Modificar</button>
             </div>
 
@@ -43,7 +44,7 @@
                 @else
                     <p class="text-gray-600">No tienes un método de pago registrado.</p>
                 @endif
-                <button  onclick="window.location.href='{{ route('tarjetas.index') }}'"
+                <button onclick="window.location.href='{{ route('tarjetas.index') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700 w-full">Modificar</button>
             </div>
 
@@ -54,21 +55,46 @@
                 @if ($carrito->isNotEmpty())
                     @foreach ($carrito as $item)
                         <div class="flex items-center gap-4 mb-4">
-                            <img src="{{ asset('storage/' . $item->producto->imagen_path) }}" alt="{{ $item->producto->nombre }}" class="w-16 h-16 object-contain rounded-lg">
+                            <img src="{{ asset('storage/' . $item->producto->imagen_path) }}"
+                                alt="{{ $item->producto->nombre }}" class="w-16 h-16 object-contain rounded-lg">
                             <div>
                                 <p class="text-gray-800 font-bold">{{ $item->producto->nombre }}</p>
-                                <p class="text-gray-600">Precio: ${{ number_format($item->producto->precio, 2) }}</p>
+
+                                <!-- Verificar si el producto tiene descuento -->
+                                @if ($item->producto->descuento)
+                                    <p class="text-gray-600">Precio original:
+                                        <s>${{ number_format($item->producto->precio, 2) }}</s></p>
+                                    <p class="text-green-600 font-bold">Descuento:
+                                        ${{ number_format($item->producto->precio - $item->producto->precio * ($item->producto->descuento / 100), 2) }}
+                                    </p>
+                                @else
+                                    <p class="text-gray-600">Precio: ${{ number_format($item->producto->precio, 2) }}
+                                    </p>
+                                @endif
+
                                 <p class="text-gray-600 text-sm">Cantidad: {{ $item->cantidad }}</p>
                             </div>
                         </div>
                     @endforeach
 
+                    <!-- Calcular Subtotal -->
+                    @php
+                        $subtotal = $carrito->sum(function ($item) {
+                            $precio = $item->producto->descuento
+                                ? $item->producto->precio - $item->producto->precio * ($item->producto->descuento / 100)
+                                : $item->producto->precio;
+
+                            return $precio * $item->cantidad;
+                        });
+                    @endphp
+
                     <p class="text-green-500 font-bold mb-4">
-                        Subtotal: ${{ number_format($carrito->sum(fn($item) => $item->producto->precio * $item->cantidad), 2) }}
+                        Subtotal: ${{ number_format($subtotal, 2) }}
                     </p>
                 @else
                     <p class="text-gray-600">Tu carrito está vacío.</p>
                 @endif
+
                 <!-- Botón Realizar Pedido y Pagar -->
                 <form action="{{ route('realizarCompra') }}" method="POST">
                     @csrf
@@ -84,6 +110,7 @@
                     Cancelar compra
                 </button>
             </div>
+
         </section>
 
         <!-- Ventajas -->
@@ -98,30 +125,30 @@
     </script>
 
     <script>
-    @if (session('success'))
-        Swal.fire({
-            title: '¡Éxito!',
-            text: "{{ session('success') }}",
-            icon: 'success',
-            confirmButtonText: 'Aceptar',
-            customClass: {
-                confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700'
-            }
-        });
-    @endif
+        @if (session('success'))
+            Swal.fire({
+                title: '¡Éxito!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700'
+                }
+            });
+        @endif
 
-    @if (session('error'))
-        Swal.fire({
-            title: 'Error',
-            text: "{{ session('error') }}",
-            icon: 'error',
-            confirmButtonText: 'Aceptar',
-            customClass: {
-                confirmButton: 'bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700'
-            }
-        });
-    @endif
-</script>
+        @if (session('error'))
+            Swal.fire({
+                title: 'Error',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    confirmButton: 'bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700'
+                }
+            });
+        @endif
+    </script>
 </body>
 
 </html>

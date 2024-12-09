@@ -38,31 +38,53 @@ class PagoController extends Controller
         $carrito = Carrito::with('producto')->where('user_id', $user->id)->get();
 
         if ($carrito->isEmpty()) {
-                return redirect()->route('carrito')->with('error', 'Tu carrito está vacío.');
+            return redirect()->route('pago')->with('error', 'Tu carrito está vacío.');
         }
 
-        // Calcular el total de la compra
-        $total = $carrito->sum(fn($item) => $item->producto->precio * $item->cantidad);
+        // Calcular el total considerando los descuentos
+        $total = $carrito->sum(function ($item) {
+            $precio = $item->producto->descuento
+                ? $item->producto->precio - ($item->producto->precio * ($item->producto->descuento / 100))
+                : $item->producto->precio;
+            return $precio * $item->cantidad;
+        });
 
-        // Crear la compra
-        $compra = Compra::create([
-            'user_id' => $user->id,
-            'total' => $total,
-        ]);
-
-        // Crear los detalles de la compra
-        foreach ($carrito as $item) {
-            DetalleCompra::create([
-                'compra_id' => $compra->id,
-                'producto_id' => $item->producto_id,
-                'cantidad' => $item->cantidad,
-                'precio' => $item->producto->precio,
+        try {
+            // Crear la compra
+            $compra = Compra::create([
+                'user_id' => $user->id,
+                'total' => $total,
             ]);
+
+            // Crear los detalles de la compra y actualizar las unidades disponibles
+            foreach ($carrito as $item) {
+                $precioConDescuento = $item->producto->descuento
+                    ? $item->producto->precio - ($item->producto->precio * ($item->producto->descuento / 100))
+                    : $item->producto->precio;
+
+                DetalleCompra::create([
+                    'compra_id' => $compra->id,
+                    'producto_id' => $item->producto_id,
+                    'cantidad' => $item->cantidad,
+                    'precio' => $precioConDescuento,
+                ]);
+
+                // Restar la cantidad comprada del inventario
+                $producto = $item->producto;
+                if ($producto->unidades_disponibles >= $item->cantidad) {
+                    $producto->unidades_disponibles -= $item->cantidad;
+                    $producto->save();
+                } else {
+                    return redirect()->route('pago')->with('error', "El producto '{$producto->nombre}' no tiene suficiente stock.");
+                }
+            }
+
+            // Vaciar el carrito
+            Carrito::where('user_id', $user->id)->delete();
+
+            return redirect()->route('pago')->with('success', 'Compra realizada con éxito.');
+        } catch (\Exception $e) {
+            return redirect()->route('pago')->with('error', 'Ocurrió un error al procesar la compra. Inténtalo de nuevo.');
         }
-
-        // Vaciar el carrito 
-        Carrito::where('user_id', $user->id)->delete();
-
-        return redirect()->route('dashboard')->with('success', 'Compra realizada con éxito.');
     }
 }
