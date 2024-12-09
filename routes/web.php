@@ -34,13 +34,8 @@ Route::get('/pedidoRealizado', function () {
 })->middleware(['auth', 'verified'])->name('pedidoRealizado');
 
 Route::middleware(['auth'])->group(function () {
-    // Mostrar carrito
     Route::get('/carrito', [CarritoController::class, 'mostrarCarrito'])->name('carrito');
-
-    // Agregar producto al carrito
     Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar');
-
-    // Eliminar producto del carrito
     Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
 });
 
@@ -104,23 +99,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.delete');
 });
-
-
-Route::middleware(['auth'])->group(function () {
-    // Mostrar carrito
-    Route::get('/carrito', [CarritoController::class, 'mostrarCarrito'])->name('carrito');
-
-    // Agregar producto al carrito
-    Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar');
-
-    // Eliminar producto del carrito
-    Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
-
-    // Proceder al pago (opcional)
-    Route::get('/carrito/pago', function () {
-        return view('Publicaciones.pago');
-    })->name('carrito.pago');
-});
-
 
 require __DIR__ . '/auth.php';
