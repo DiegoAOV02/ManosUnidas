@@ -22,7 +22,16 @@
                 <span class="text-lg font-medium">Regresar</span>
             </button>
         </div>
-2
+        @if ($errors->any())
+            <div class="text-red-500">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <!-- Contenido Principal -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-24">
             <h1 class="text-2xl font-bold text-gray-800 mb-8">Vender</h1>
@@ -56,17 +65,12 @@
                         <input type="text" id="descripcionProducto" name="descripcionProducto"
                             class="w-full p-2 border border-gray-300 rounded-lg" placeholder="Ej. Tamaño 45×50cm">
                     </div>
-                    <div>
-                        <label for="precioProducto" class="block text-sm font-semibold text-gray-700">Precio</label>
-                        <input type="text" id="precioProducto" name="precioProducto"
-                            class="w-full p-2 border border-gray-300 rounded-lg" placeholder="$300.00">
-                    </div>
-                    <div>
-                        <label for="unidadesDisponibles" class="block text-sm font-semibold text-gray-700">Unidades
-                            Disponibles</label>
-                        <input type="number" id="unidadesDisponibles" name="unidadesDisponibles"
-                            class="w-full p-2 border border-gray-300 rounded-lg" placeholder="5">
-                    </div>
+                    <input type="number" id="precioProducto" name="precioProducto"
+                        class="w-full p-2 border border-gray-300 rounded-lg" placeholder="$300.00" required
+                        min="0.01" step="0.01">
+
+                    <input type="number" id="unidadesDisponibles" name="unidadesDisponibles"
+                        class="w-full p-2 border border-gray-300 rounded-lg" placeholder="5" required min="1">
                     <div class="col-span-2">
                         <label for="categoria" class="block text-sm font-semibold text-gray-700">Categoría</label>
                         <select id="categoria" name="categoria" class="w-full p-2 border border-gray-300 rounded-lg">
@@ -114,6 +118,29 @@
         }
 
         function previewImage(event) {
+            const file = event.target.files[0];
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+
+            if (!validTypes.includes(file.type)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Formato no válido',
+                    text: 'Por favor, sube una imagen en formato JPEG, JPG o PNG.',
+                });
+                event.target.value = ''; // Limpiar el campo de archivo
+                return;
+            }
+
+            if (file.size > 2048 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Imagen demasiado grande',
+                    text: 'El tamaño máximo permitido es 2 MB.',
+                });
+                event.target.value = ''; // Limpiar el campo de archivo
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function() {
                 const imageContainer = document.querySelector('.border-2');
@@ -121,7 +148,7 @@
                 imageContainer.style.backgroundSize = 'cover';
                 imageContainer.style.backgroundPosition = 'center';
             };
-            reader.readAsDataURL(event.target.files[0]);
+            reader.readAsDataURL(file);
         }
     </script>
 </body>
