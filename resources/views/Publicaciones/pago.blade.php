@@ -43,11 +43,8 @@
                 @else
                     <p class="text-gray-600">No tienes un método de pago registrado.</p>
                 @endif
-                <!-- <button onclick="window.location.href='{{ route('tarjetas.index') }}'"
-                    class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full mb-2">Agregar
-                    otra tarjeta</button>
-                <button onclick="editarTarjeta()"
-                    class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 w-full">Modificar</button> -->
+                <button  onclick="window.location.href='{{ route('tarjetas.index') }}'"
+                    class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700 w-full">Modificar</button>
             </div>
 
             <!-- Revisar Artículos y Envío -->
@@ -94,57 +91,6 @@
         function toggleDropdown(id) {
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
-        }
-
-        function editarTarjeta() {
-            Swal.fire({
-                title: '<h2 class="text-lg font-bold text-gray-800">Editar Tarjeta</h2>',
-                html: `
-             <form id="tarjetaForm" class="grid grid-cols-2 gap-4 text-left w-full">
-            <div class="col-span-2">
-                <label for="nombre" class="block text-sm font-semibold text-gray-700">Nombre del Titular</label>
-                <input type="text" id="nombre" class="swal2-input w-62" placeholder="Ej. Juan Pérez" required>
-            </div>
-            <div class="col-span-2">
-                <label for="numeroTarjeta" class="block text-sm font-semibold text-gray-700">Número de Tarjeta</label>
-                <input type="text" id="numeroTarjeta" class="swal2-input w-62" placeholder="Ej. 1234 5678 9012 3456" maxlength="16" required>
-            </div>
-            <div>
-                <label for="fechaExp" class="block text-sm font-semibold text-gray-700">Fecha de Expiración</label>
-                <input type="text" id="fechaExp" class="swal2-input w-32" placeholder="Ej. 12/25" maxlength="5" required>
-            </div>
-            <div>
-                <label for="ccv" class="block text-sm font-semibold text-gray-700">CCV</label>
-                <input type="text" id="ccv" class="swal2-input w-24" placeholder="Ej. 123" maxlength="3" required>
-            </div>
-        </form>
-        `,
-                confirmButtonText: 'Guardar',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                customClass: {
-                    popup: 'w-full max-w-xl rounded-lg p-6',
-                    confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700',
-                    cancelButton: 'border border-gray-300 text-gray-600 font-bold py-2 px-4 rounded-lg hover:bg-gray-100',
-                },
-                preConfirm: () => {
-                    const datos = {
-                        nombre: document.getElementById('nombre').value,
-                        numeroTarjeta: document.getElementById('numeroTarjeta').value,
-                        fechaExp: document.getElementById('fechaExp').value,
-                        ccv: document.getElementById('ccv').value,
-                    };
-                    if (Object.values(datos).some((val) => val.trim() === '')) {
-                        Swal.showValidationMessage('Todos los campos son obligatorios');
-                    }
-                    return datos;
-                },
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    console.log('Tarjeta actualizada:', result.value);
-                    Swal.fire('¡Tarjeta actualizada!', '', 'success');
-                }
-            });
         }
     </script>
 </body>
