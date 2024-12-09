@@ -1,7 +1,9 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+
 return new class extends Migration
 {
     /**
@@ -9,20 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if(!Schema::hasTable('productos')) {
+        if (!Schema::hasTable('productos')) {
             Schema::create('productos', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('user_id'); // Relación con la tabla users
                 $table->string('nombre_producto');
                 $table->text('descripcion_producto')->nullable();
                 $table->decimal('precio', 10, 2);
+                $table->decimal('descuento', 5, 2)->nullable()->after('precio');
                 $table->integer('unidades_disponibles');
                 $table->string('categoria');
                 $table->string('imagen_path')->nullable(); // Ruta de la imagen subida
                 $table->timestamps();
                 // Llave foránea
                 $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            }); 
+            });
         }
     }
     /**

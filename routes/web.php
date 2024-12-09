@@ -59,11 +59,15 @@ Route::get('/cuenta', function () {
 Route::get('/vender', function () {
     return view('ventas/vender');
 })->middleware(['auth', 'verified'])->name('vender');
+
 Route::post('/vender', [ProductoController::class, 'store'])->middleware(['auth', 'verified'])->name('productos.store');
 
-Route::get('/misVentas', [ProductoController::class, 'misVentas'])->middleware(['auth', 'verified'])->name('misVentas');
-Route::delete('/productos/{producto}', [ProductoController::class, 'destroy'])->middleware(['auth', 'verified'])->name('productos.destroy');
-Route::put('/productos/{producto}', [ProductoController::class, 'update'])->middleware(['auth', 'verified'])->name('productos.update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/misVentas', [ProductoController::class, 'misVentas'])->name('productos.misVentas');
+    Route::put('/productos/{id}', [ProductoController::class, 'update'])->name('productos.update');
+    Route::delete('/producto/{producto}', [ProductoController::class, 'destroy'])->name('productos.destroy');
+    Route::put('/productos/{producto}', [ProductoController::class, 'update'])->name('productos.update');
+});
 
 Route::get('/categorias', [CategoriasController::class, 'index'])->name('categorias');
 Route::get('/buscar', [BusquedaController::class, 'index'])->name('buscar');

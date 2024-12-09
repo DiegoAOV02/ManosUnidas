@@ -69,8 +69,7 @@
                     </div>
                     <div class="col-span-2">
                         <label for="categoria" class="block text-sm font-semibold text-gray-700">Categoría</label>
-                        <select id="categoria" name="categoria"
-                            class="w-full p-2 border border-gray-300 rounded-lg">
+                        <select id="categoria" name="categoria" class="w-full p-2 border border-gray-300 rounded-lg">
                             <option value="Belleza y Cuidado Personal">Belleza y Cuidado Personal</option>
                             <option value="Construcción">Construcción</option>
                             <option value="Electrodomésticos">Electrodomésticos</option>
@@ -101,7 +100,7 @@
             Swal.fire({
                 icon: 'success',
                 title: '¡Producto publicado!',
-                text: '{{ session("success") }}',
+                text: '{{ session('success') }}',
                 confirmButtonText: 'Aceptar',
                 timer: 3000
             });
@@ -109,13 +108,14 @@
     @endif
 
     <script>
-               function toggleDropdown(id) {
+        function toggleDropdown(id) {
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
         }
+
         function previewImage(event) {
             const reader = new FileReader();
-            reader.onload = function () {
+            reader.onload = function() {
                 const imageContainer = document.querySelector('.border-2');
                 imageContainer.style.backgroundImage = `url(${reader.result})`;
                 imageContainer.style.backgroundSize = 'cover';
