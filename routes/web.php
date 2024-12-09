@@ -8,6 +8,7 @@ use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\DireccionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProductoSeleccionadoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -15,9 +16,14 @@ Route::get('/', function () {
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+// Ruta para visualizar un producto específico por ID
+Route::get('/publicacion/{id}', [ProductoSeleccionadoController::class, 'show'])->name('publicacion');
+
+// Ruta genérica para acceder a una página sin un ID (por ejemplo, un error o página en blanco)
 Route::get('/publicacion', function () {
-    return view('Publicaciones/publicacion');
-})->middleware(['auth', 'verified'])->name('publicacion');
+    return view('Publicaciones.publicacion'); // Ruta genérica
+})->middleware(['auth', 'verified'])->name('publicacion.general');
+
 
 Route::get('/pago', function () {
     return view('Publicaciones/pago');
@@ -91,7 +97,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.delete');
 });
-
-
 
 require __DIR__.'/auth.php';

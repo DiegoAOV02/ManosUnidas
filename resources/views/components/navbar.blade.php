@@ -5,7 +5,7 @@
         <!-- Logo -->
         <div class="flex items-center gap-4">
             <a href="/dashboard" class="flex items-center gap-4">
-                <img src="img/logo.png" alt="Logo Manos Unidas" class="w-12 h-12">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo Manos Unidas" class="w-12 h-12">
                 <h1 class="text-2xl font-bold">ManosUnidas</h1>
             </a>
         </div>
@@ -15,7 +15,7 @@
                 <input type="text" name="query" placeholder="Buscar producto..."
                     class="w-full p-2 pr-10 pl-4 rounded-lg text-gray-700 placeholder-gray-500">
                 <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2">
-                    <img src="img/buscar.png" alt="Buscar" class="w-5 h-5">
+                    <img src="{{ asset('img/buscar.png') }}" alt="Buscar" class="w-5 h-5">
                 </button>
             </form>
         </div>
