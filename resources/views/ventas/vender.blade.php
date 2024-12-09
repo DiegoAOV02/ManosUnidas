@@ -22,7 +22,7 @@
                 <span class="text-lg font-medium">Regresar</span>
             </button>
         </div>
-
+2
         <!-- Contenido Principal -->
         <div class="bg-white rounded-lg shadow-md p-6 mb-24">
             <h1 class="text-2xl font-bold text-gray-800 mb-8">Vender</h1>
