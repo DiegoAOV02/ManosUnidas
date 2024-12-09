@@ -21,47 +21,63 @@
             <span class="text-lg font-medium">Regresar</span>
         </button>
 
-         <!-- Título de Mi Carrito -->
-    <h2 class="text-2xl font-bold text-gray-800 mb-8">Mi carrito</h2>
+        <!-- Título de Mi Carrito -->
+        <h2 class="text-2xl font-bold text-gray-800 mb-8">Mi carrito</h2>
     
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        @if ($carrito->isNotEmpty())
-            @foreach ($carrito as $item)
-                <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
-                    <div class="flex items-center gap-4">
-                    <img src="{{ asset('storage/' . $item->producto->imagen_path) }}" alt="{{ $item->producto->nombre }}" class="w-16 h-16 object-contain rounded-lg">
-                        <div>
-                        <p class="text-gray-800 font-bold">{{ $item->producto->nombre }}</p>
-                        <p class="text-gray-600">Precio: ${{ number_format($item->producto->precio, 2) }}</p>
-                        <p class="text-gray-600">Cantidad: {{ $item->cantidad }}</p>
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            @if ($carrito->isNotEmpty())
+                @foreach ($carrito as $item)
+                    <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
+                        <div class="flex items-center gap-4">
+                            <img src="{{ asset('storage/' . $item->producto->imagen_path) }}" alt="{{ $item->producto->nombre }}" class="w-16 h-16 object-contain rounded-lg">
+                            <div>
+                                <p class="text-gray-800 font-bold">{{ $item->producto->nombre }}</p>
+                                
+                                <!-- Verificar si el producto tiene descuento -->
+                                @if ($item->producto->descuento)
+                                    <p class="text-gray-600">Precio original: <s>${{ number_format($item->producto->precio, 2) }}</s></p>
+                                    <p class="text-green-600 font-bold">Descuento: ${{ number_format($item->producto->precio - ($item->producto->precio * ($item->producto->descuento / 100)), 2) }}</p>
+                                @else
+                                    <p class="text-gray-600">Precio: ${{ number_format($item->producto->precio, 2) }}</p>
+                                @endif
+
+                                <p class="text-gray-600">Cantidad: {{ $item->cantidad }}</p>
+                            </div>
                         </div>
+                        <form action="{{ route('carrito.eliminar', $item->id) }}" method="POST" class="mt-4">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 text-sm hover:underline">
+                                Eliminar
+                            </button>
+                        </form>
                     </div>
-                    <form action="{{ route('carrito.eliminar', $item->id) }}" method="POST" class="mt-4">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="text-red-600 text-sm hover:underline">
-                            Eliminar
-                        </button>
-                    </form>
-                </div>
-            @endforeach
+                @endforeach
     
-            <!-- Resumen del carrito -->
-            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">
-                    Subtotal: <span class="text-blue-600">
-                        ${{ number_format($carrito->sum(fn($item) => $item->producto->precio * $item->cantidad), 2) }}
-                    </span>
-                </h3>
-                <button onclick="window.location.href='{{ route('pago') }}'"
-                    class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full">
-                    Proceder al pago
-                </button>
-            </div>
-        @else
-            <p class="text-gray-600">Tu carrito está vacío.</p>
-        @endif
-    </section>    
+                <!-- Resumen del carrito -->
+                <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">
+                        <!-- Calcular Subtotal -->
+                        @php
+                            $subtotal = $carrito->sum(function ($item) {
+                                $precio = $item->producto->descuento
+                                    ? $item->producto->precio - ($item->producto->precio * ($item->producto->descuento / 100))
+                                    : $item->producto->precio;
+
+                                return $precio * $item->cantidad;
+                            });
+                        @endphp
+                        Subtotal: <span class="text-blue-600">${{ number_format($subtotal, 2) }}</span>
+                    </h3>
+                    <button onclick="window.location.href='{{ route('pago') }}'"
+                        class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full">
+                        Proceder al pago
+                    </button>
+                </div>
+            @else
+                <p class="text-gray-600">Tu carrito está vacío.</p>
+            @endif
+        </section>    
 
         <!-- Ventajas -->
         @include('components.ventajas')
