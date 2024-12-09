@@ -14,7 +14,7 @@ class="bg-gradient-to-r from-[#003152] to-[#0166A5] text-white fixed bottom-0 le
 </div>
 <div class="border-l border-white mx-4 h-12"></div>
 <div class="flex flex-col items-center">
-    <img src="{{ asset('img/verificaado.png') }}" alt="Seguridad en tus compras" class="w-12 h-12 mb-2">
+    <img src="{{ asset('img/verificado.png') }}" alt="Seguridad en tus compras" class="w-12 h-12 mb-2">
     <p class="font-bold">Seguridad en tus compras</p>
     <p class="text-sm text-center">Tus compras están aseguradas para regresarte tu dinero.</p>
 </div>

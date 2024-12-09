@@ -3,11 +3,12 @@
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TarjetaController;
-use App\Http\Controllers\CategoriasController; 
+use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\DireccionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CarritoController;
 use App\Http\Controllers\ProductoSeleccionadoController;
 
 Route::get('/', function () {
@@ -98,4 +99,22 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.delete');
 });
 
-require __DIR__.'/auth.php';
+
+Route::middleware(['auth'])->group(function () {
+    // Mostrar carrito
+    Route::get('/carrito', [CarritoController::class, 'mostrarCarrito'])->name('carrito');
+
+    // Agregar producto al carrito
+    Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar');
+
+    // Eliminar producto del carrito
+    Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
+
+    // Proceder al pago (opcional)
+    Route::get('/carrito/pago', function () {
+        return view('Publicaciones.pago');
+    })->name('carrito.pago');
+});
+
+
+require __DIR__ . '/auth.php';

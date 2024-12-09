@@ -51,22 +51,20 @@
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Precio más conveniente</h3>
                 <p class="text-gray-800 text-3xl font-bold">${{ number_format($producto->precio, 2) }}</p>
                 <p class="text-green-500 font-bold text-lg mt-4">Llega gratis mañana</p>
-                <div class="flex items-center gap-8 mt-4">
-                    <label for="quantity" class="text-gray-800 font-bold">Cantidad:</label>
-                    <select id="quantity" class="border border-gray-300 rounded-md p-2 w-40">
-                        @for ($i = 1; $i <= $producto->unidades_disponibles; $i++)
-                            <option>{{ $i }} unidad{{ $i > 1 ? 'es' : '' }}</option>
-                        @endfor
-                    </select>
-                </div>                
-                <div class="flex gap-4 mt-6">
-                    <button onclick="window.location.href='{{ route('pago') }}'" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">
-                        Comprar ahora
-                    </button>
-                    <button onclick="window.location.href='{{ route('carrito') }}'" class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100">
+                <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
+                    @csrf
+                    <div class="flex items-center gap-8 mt-4">
+                        <label for="quantity" class="text-gray-800 font-bold">Cantidad:</label>
+                        <select name="cantidad" id="quantity" class="border border-gray-300 rounded-md p-2 w-40">
+                            @for ($i = 1; $i <= $producto->unidades_disponibles; $i++)
+                                <option value="{{ $i }}">{{ $i }} unidad{{ $i > 1 ? 'es' : '' }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <button type="submit" class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 mt-4">
                         Agregar al carrito
                     </button>
-                </div>
+                </form>                
             </div>
         </section>
 

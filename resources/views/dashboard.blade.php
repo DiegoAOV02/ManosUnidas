@@ -27,7 +27,7 @@
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <!-- Oferta del Día -->
             @if (isset($ofertaDelDia) && $ofertaDelDia)
-                <div id="oferta-del-dia"
+                <a href="{{ route('publicacion', $ofertaDelDia->id) }}" id="oferta-del-dia"
                     class="bg-white rounded-lg shadow-md p-8 text-center hover:shadow-lg transition-shadow">
                     <h2 class="text-xl font-bold text-gray-800 mb-6">Oferta del día</h2>
                     <img src="{{ asset('storage/' . $ofertaDelDia->imagen_path) }}"
@@ -39,7 +39,7 @@
                     </p>
                     <p class="text-green-500 text-base">{{ $ofertaDelDia->descuento }}% OFF</p>
                     <p class="text-base text-green-600 mt-4">Envío Gratis</p>
-                </div>
+                </a>
             @endif
 
             <!-- Ofertas Destacadas -->
