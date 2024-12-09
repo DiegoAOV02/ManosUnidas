@@ -49,7 +49,7 @@
             <!-- Panel de Compra -->
             <div class="bg-white rounded-lg shadow-md p-6 lg:col-span-2 flex flex-col justify-center">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">Precio más conveniente</h3>
-                <p class="text-gray-800 text-3xl font-bold">${{ number_format($producto->precio, 2) }}</p>
+                <p class="text-gray-800 text-3xl font-bold">${{ number_format($producto->precio - ($producto->precio * $producto->descuento / 100), 2) }}</p>
                 <p class="text-green-500 font-bold text-lg mt-4">Llega gratis mañana</p>
                 <form action="{{ route('carrito.agregar', $producto->id) }}" method="POST">
                     @csrf

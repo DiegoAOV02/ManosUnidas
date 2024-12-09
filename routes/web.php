@@ -9,6 +9,7 @@ use App\Http\Controllers\DireccionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\PagoController;
 use App\Http\Controllers\ProductoSeleccionadoController;
 
@@ -28,6 +29,8 @@ Route::get('/publicacion', function () {
 
 
 Route::get('/pago', [PagoController::class, 'index'])->middleware(['auth', 'verified'])->name('pago');
+Route::post('/realizar-compra', [PagoController::class, 'realizarCompra'])->middleware(['auth', 'verified'])->name('realizarCompra');
+
 
 Route::get('/pedidoRealizado', function () {
     return view('Publicaciones/pedidoRealizado');
@@ -39,9 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
 });
 
-Route::get('/compras', function () {
-    return view('Publicaciones/compras');
-})->middleware(['auth', 'verified'])->name('compras');
+Route::get('/compras', [CompraController::class, 'index'])->middleware(['auth', 'verified'])->name('compras');
 
 Route::get('/categorias', function () {
     return view('Publicaciones/categorias');

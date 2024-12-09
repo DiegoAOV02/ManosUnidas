@@ -70,10 +70,13 @@
                     <p class="text-gray-600">Tu carrito está vacío.</p>
                 @endif
                 <!-- Botón Realizar Pedido y Pagar -->
-                <button onclick="window.location.href='{{ route('pedidoRealizado') }}'"
-                    class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full mb-2">
-                    Realizar pedido y pagar
-                </button>
+                <form action="{{ route('realizarCompra') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full mb-2">
+                        Realizar pedido y pagar
+                    </button>
+                </form>
 
                 <!-- Botón Cancelar Compra -->
                 <button onclick="window.history.back()"
@@ -93,6 +96,32 @@
             dropdown.classList.toggle('hidden');
         }
     </script>
+
+    <script>
+    @if (session('success'))
+        Swal.fire({
+            title: '¡Éxito!',
+            text: "{{ session('success') }}",
+            icon: 'success',
+            confirmButtonText: 'Aceptar',
+            customClass: {
+                confirmButton: 'bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700'
+            }
+        });
+    @endif
+
+    @if (session('error'))
+        Swal.fire({
+            title: 'Error',
+            text: "{{ session('error') }}",
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            customClass: {
+                confirmButton: 'bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700'
+            }
+        });
+    @endif
+</script>
 </body>
 
 </html>

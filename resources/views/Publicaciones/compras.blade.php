@@ -25,50 +25,33 @@
             <!-- Encabezado de Mis Compras -->
             <div class="flex items-center justify-between bg-gray-100 p-4 rounded-lg shadow-md mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Mis compras</h2>
-                <div class="relative inline-block">
-                    <button onclick="toggleDropdown('time-dropdown')"
-                        class="text-blue-600 hover:underline text-sm font-medium flex items-center gap-1 focus:outline-none">
-                        últimos 3 meses
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Opciones desplegables -->
-                    <div id="time-dropdown"
-                        class="absolute hidden bg-white border border-gray-300 rounded-lg shadow-md mt-2 w-40 z-50">
-                        <ul class="py-2 text-sm text-gray-800">
-                            <li class="px-4 py-2 hover:bg-gray-100"><a href="#">Últimos 3 meses</a></li>
-                            <li class="px-4 py-2 hover:bg-gray-100"><a href="#">Últimos 6 meses</a></li>
-                            <li class="px-4 py-2 hover:bg-gray-100"><a href="#">Todo el tiempo</a></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
 
             <!-- Lista de Compras -->
-            <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 mb-8">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">Entregado el 28 de noviembre</h3>
-                <div class="flex items-start gap-4">
-                    <!-- Imagen del Producto -->
-                    <img src="img/iphone.png" alt="Producto" class="w-20 h-20 object-contain rounded-lg">
+            @forelse ($compras as $compra)
+                <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6 mb-8">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">
+                        Pedido el {{ $compra->created_at->format('d M Y') }}
+                    </h3>
+                    <div class="flex items-start gap-4">
+                        @foreach ($compra->detalles as $detalle)
+                            <!-- Imagen del Producto -->
+                            <img src="{{ asset('storage/' . $detalle->producto->imagen_path) }}" alt="{{ $detalle->producto->nombre }}" class="w-20 h-20 object-contain rounded-lg">
 
-                    <!-- Detalles del Producto -->
-                    <div class="text-left flex-1">
-                        <p class="text-blue-600 font-bold text-lg">iPhone 16 128GB Color Blanco Glacial</p>
-                        <p class="text-gray-800 font-bold">Total: <span class="text-blue-600">$14,500.00</span></p>
-                        <p class="text-gray-600 text-sm">Pedido No. IOJSN2BUYVBIU2O3J9</p>
+                            <!-- Detalles del Producto -->
+                            <div class="text-left flex-1">
+                                <p class="text-blue-600 font-bold text-lg">{{ $detalle->producto->nombre }}</p>
+                                <p class="text-gray-800 font-bold">Precio unitario: <span class="text-blue-600">${{ number_format($detalle->precio, 2) }}</span></p>
+                                <p class="text-gray-600 text-sm">Cantidad: {{ $detalle->cantidad }}</p>
+                                <p class="text-gray-800 font-bold">Subtotal: <span class="text-blue-600">${{ number_format($detalle->cantidad * $detalle->precio, 2) }}</span></p>
+                            </div>
+                        @endforeach
                     </div>
-
-                    <!-- Botón Volver a Comprar -->
-                    <div class="flex items-start">
-                        <button onclick="window.location.href='{{ route('publicacion') }}'"
-                            class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100">
-                            Volver a comprar
-                        </button>
-                    </div>
+                    <p class="text-gray-800 font-bold mt-4">Total de la compra: <span class="text-blue-600">${{ number_format($compra->total, 2) }}</span></p>
                 </div>
-            </div>
+            @empty
+                <p class="text-gray-600">No has realizado ninguna compra.</p>
+            @endforelse
         </div>
 
         <!-- Ventajas -->
