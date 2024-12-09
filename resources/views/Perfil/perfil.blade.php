@@ -7,6 +7,7 @@
     <title>Mi perfil</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -64,8 +65,8 @@
                     <div class="flex items-center gap-4 mb-4">
                         <img src="img/usuario.png" alt="Usuario" class="w-12 h-12 rounded-full">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-800">Diego A. Ortiz</h2>
-                            <p class="text-sm text-gray-600">2030282@upv.edu.mx</p>
+                            <h2 class="text-lg font-bold text-gray-800">{{ $user->nombre }} {{ $user->apellido }}</h2>
+                            <p class="text-sm text-gray-600">{{ $user->email }}</p>
                         </div>
                     </div>
                     <hr class="border-gray-300 mb-4">
@@ -86,7 +87,7 @@
                         </li>
                     </ul>
                     <div class="mt-6">
-                        <button
+                        <button onclick="deleteAccount()"
                             class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 flex items-center gap-2">
                             Eliminar Cuenta
                         </button>
@@ -103,6 +104,41 @@
         function toggleDropdown(id) {
             const dropdown = document.getElementById(id);
             dropdown.classList.toggle('hidden');
+        }
+        
+        function deleteAccount() {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡Tu cuenta será eliminada de forma permanente!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('{{ route('profile.delete') }}', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('Eliminado', 'Tu cuenta ha sido eliminada.', 'success')
+                                .then(() => window.location.href = '/');
+                        } else {
+                            Swal.fire('Error', 'Hubo un problema al eliminar tu cuenta.', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'No se pudo eliminar tu cuenta.', 'error');
+                    });
+                }
+            });
         }
     </script>
 </body>

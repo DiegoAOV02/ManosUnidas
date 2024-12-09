@@ -7,14 +7,13 @@ use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\BusquedaController;
 use App\Http\Controllers\DireccionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/publicacion', function () {
     return view('Publicaciones/publicacion');
@@ -88,7 +87,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/cuenta', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/perfil', [ProfileController::class, 'perfil'])->name('profile.perfil');
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.delete');
 });
+
+
 
 require __DIR__.'/auth.php';

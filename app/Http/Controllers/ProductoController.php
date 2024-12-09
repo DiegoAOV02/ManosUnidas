@@ -44,38 +44,38 @@ class ProductoController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    try {
-        $producto = Producto::findOrFail($id);
-        
-        // Verifica que el producto pertenezca al usuario autenticado
-        if ($producto->user_id !== Auth::id()) {
-            return response()->json(['error' => 'No autorizado'], 403);
+    {
+        try {
+            $producto = Producto::findOrFail($id);
+
+            // Verifica que el producto pertenezca al usuario autenticado
+            if ($producto->user_id !== Auth::id()) {
+                return response()->json(['error' => 'No autorizado'], 403);
+            }
+
+            $request->validate([
+                'nombre_producto' => 'required|string|max:255',
+                'descripcion_producto' => 'nullable|string',
+                'precio' => 'required|numeric|min:0',
+                'descuento' => 'nullable|numeric|min:0|max:100',
+                'unidades_disponibles' => 'required|integer|min:1',
+                'categoria' => 'required|string',
+            ]);
+
+            $producto->update([
+                'nombre_producto' => $request->nombre_producto,
+                'descripcion_producto' => $request->descripcion_producto,
+                'precio' => $request->precio,
+                'descuento' => $request->descuento,
+                'unidades_disponibles' => $request->unidades_disponibles,
+                'categoria' => $request->categoria,
+            ]);
+
+            return response()->json(['success' => true, 'message' => 'Producto actualizado con éxito']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
-
-        $request->validate([
-            'nombre_producto' => 'required|string|max:255',
-            'descripcion_producto' => 'nullable|string',
-            'precio' => 'required|numeric|min:0',
-            'descuento' => 'nullable|numeric|min:0|max:100',
-            'unidades_disponibles' => 'required|integer|min:1',
-            'categoria' => 'required|string',
-        ]);
-
-        $producto->update([
-            'nombre_producto' => $request->nombre_producto,
-            'descripcion_producto' => $request->descripcion_producto,
-            'precio' => $request->precio,
-            'descuento' => $request->descuento,
-            'unidades_disponibles' => $request->unidades_disponibles,
-            'categoria' => $request->categoria,
-        ]);
-
-        return response()->json(['success' => true, 'message' => 'Producto actualizado con éxito']);
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
     }
-}
 
 
     // Eliminar un producto

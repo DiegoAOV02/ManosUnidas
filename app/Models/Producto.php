@@ -18,6 +18,7 @@ class Producto extends Model
         'imagen_path',
         'descuento',
     ];
+
     // Relación con el modelo User
     public function user()
     {

@@ -15,6 +15,14 @@ class ProfileController extends Controller
         return view('Perfil.cuenta', compact('user'));
     }
 
+    public function perfil()
+    {
+        $user = Auth::user();
+
+        // Retornar la vista `Perfil.perfil` con los datos del usuario
+        return view('Perfil.perfil', compact('user'));
+    }
+
     public function update(Request $request)
     {
         try {
@@ -49,6 +57,21 @@ class ProfileController extends Controller
         } catch (\Exception $e) {
             Log::error('Error al actualizar perfil:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Error al actualizar la información'], 500);
+        }
+    }
+
+    public function destroy()
+    {
+        try {
+            $user = Auth::user();
+
+            // Elimina al usuario autenticado
+            $user->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar cuenta:', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Error al eliminar la cuenta'], 500);
         }
     }
 }

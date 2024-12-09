@@ -30,11 +30,21 @@
                 @foreach ($productos as $producto)
                     <a href="{{ route('publicacion', ['id' => $producto->id]) }}"
                         class="bg-white rounded-lg shadow-md p-6 text-left w-full max-w-md hover:shadow-lg transition-shadow">
-                        <img src="{{ asset('storage/' . $producto->imagen_path) }}" alt="{{ $producto->nombre_producto }}" class="w-full h-48 object-contain mb-4">
+                        <!-- Imagen del Producto -->
+                        <img src="{{ asset('storage/' . $producto->imagen_path) }}"
+                            alt="{{ $producto->nombre_producto }}" class="w-full h-48 object-contain mb-4">
 
+                        <!-- Detalles del Producto -->
                         <p class="text-sm text-gray-800">{{ $producto->nombre_producto }}</p>
-                        <p class="text-gray-600 line-through">${{ number_format($producto->precio + 500, 2) }}</p>
-                        <p class="text-green-500 text-xl font-bold">${{ number_format($producto->precio, 2) }}</p>
+                        <p class="text-gray-600 line-through">
+                            ${{ number_format($producto->precio * (1 + $producto->descuento / 100), 2) }}
+                        </p>
+                        <p class="text-green-500 text-xl font-bold">
+                            ${{ number_format($producto->precio, 2) }}
+                        </p>
+                        <p class="text-green-500 text-sm font-semibold">
+                            {{ $producto->descuento }}% OFF
+                        </p>
                         <p class="text-base text-green-600 mt-4">Envío Gratis</p>
                     </a>
                 @endforeach
