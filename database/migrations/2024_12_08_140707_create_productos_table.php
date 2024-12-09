@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->string('nombre_producto');
                 $table->text('descripcion_producto')->nullable();
                 $table->decimal('precio', 10, 2);
-                $table->decimal('descuento', 5, 2)->nullable()->after('precio');
+                $table->decimal('descuento', 5, 2)->nullable();
                 $table->integer('unidades_disponibles');
                 $table->string('categoria');
                 $table->string('imagen_path')->nullable(); // Ruta de la imagen subida

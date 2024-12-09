@@ -25,36 +25,53 @@
             <!-- Dirección de Envío -->
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">1. Dirección de envío</h3>
-                <p class="text-gray-600 mb-2">Diego A. Ortiz</p>
-                <p class="text-gray-600">C Lomas del Pedregal 380 Fracc Lomas de Calamaco, Ciudad Victoria, Tamaulipas
-                    87018</p>
-                <button  onclick="window.location.href='{{ route('direcciones') }}'"
+                @if ($direccion)
+                    <p class="text-gray-600 mb-2">{{ $direccion->user->nombre}} {{ $direccion->user->apellido}}</p>
+                    <p class="text-gray-600">{{ $direccion->calle }}, {{ $direccion->colonia }}, {{ $direccion->numero }}</p>
+                @else
+                    <p class="text-gray-600">No tienes una dirección registrada.</p>
+                @endif
+                <button  onclick="window.location.href='{{ route('direcciones.index') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mt-4 hover:bg-blue-700 w-full">Modificar</button>
             </div>
 
             <!-- Método de Pago -->
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">2. Método de pago</h3>
-                <p class="text-gray-600 mb-4">Pagar con Visa 3217</p>
-                <button onclick="window.location.href='{{ route('tarjetas') }}'"
+                @if ($tarjeta)
+                    <p class="text-gray-600 mb-4">Visa con terminación {{ substr($tarjeta->numero_tarjeta, -4) }}</p>
+                @else
+                    <p class="text-gray-600">No tienes un método de pago registrado.</p>
+                @endif
+                <!-- <button onclick="window.location.href='{{ route('tarjetas.index') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full mb-2">Agregar
                     otra tarjeta</button>
                 <button onclick="editarTarjeta()"
-                    class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 w-full">Modificar</button>
+                    class="border border-blue-600 text-blue-600 font-bold py-2 px-4 rounded-lg hover:bg-blue-100 w-full">Modificar</button> -->
             </div>
 
             <!-- Revisar Artículos y Envío -->
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">3. Revisar artículos y envío</h3>
-                <div class="flex items-center gap-4 mb-4">
-                    <img src="img/arbol.jpg" alt="Producto" class="w-16 h-16 object-contain rounded-lg">
-                    <div>
-                        <p class="text-gray-800 font-bold">Árbol de Navidad Artificial Pino 1.8m OHS7GY</p>
-                        <p class="text-gray-600">$1,450.00</p>
-                        <p class="text-gray-600 text-sm">Cantidad: 1 artículo</p>
-                    </div>
-                </div>
-                <p class="text-green-500 font-bold mb-4">Llega el 30 de noviembre</p>
+
+                @if ($carrito->isNotEmpty())
+                    @foreach ($carrito as $item)
+                        <div class="flex items-center gap-4 mb-4">
+                            <img src="{{ asset('storage/' . $item->producto->imagen_path) }}" alt="{{ $item->producto->nombre }}" class="w-16 h-16 object-contain rounded-lg">
+                            <div>
+                                <p class="text-gray-800 font-bold">{{ $item->producto->nombre }}</p>
+                                <p class="text-gray-600">Precio: ${{ number_format($item->producto->precio, 2) }}</p>
+                                <p class="text-gray-600 text-sm">Cantidad: {{ $item->cantidad }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <p class="text-green-500 font-bold mb-4">
+                        Subtotal: ${{ number_format($carrito->sum(fn($item) => $item->producto->precio * $item->cantidad), 2) }}
+                    </p>
+                @else
+                    <p class="text-gray-600">Tu carrito está vacío.</p>
+                @endif
                 <!-- Botón Realizar Pedido y Pagar -->
                 <button onclick="window.location.href='{{ route('pedidoRealizado') }}'"
                     class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 w-full mb-2">

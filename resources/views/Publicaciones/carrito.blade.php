@@ -25,18 +25,18 @@
     <h2 class="text-2xl font-bold text-gray-800 mb-8">Mi carrito</h2>
     
     <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        @if (!empty($carrito))
-            @foreach ($carrito as $id => $producto)
+        @if ($carrito->isNotEmpty())
+            @foreach ($carrito as $item)
                 <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                     <div class="flex items-center gap-4">
-                        <img src="{{ asset('storage/' . $producto['imagen']) }}" alt="{{ $producto['nombre'] }}" class="w-16 h-16 object-contain rounded-lg">
+                    <img src="{{ asset('storage/' . $item->producto->imagen_path) }}" alt="{{ $item->producto->nombre }}" class="w-16 h-16 object-contain rounded-lg">
                         <div>
-                            <p class="text-gray-800 font-bold">{{ $producto['nombre'] }}</p>
-                            <p class="text-gray-600">Precio: ${{ number_format($producto['precio'], 2) }}</p>
-                            <p class="text-gray-600">Cantidad: {{ $producto['cantidad'] }}</p>
+                        <p class="text-gray-800 font-bold">{{ $item->producto->nombre }}</p>
+                        <p class="text-gray-600">Precio: ${{ number_format($item->producto->precio, 2) }}</p>
+                        <p class="text-gray-600">Cantidad: {{ $item->cantidad }}</p>
                         </div>
                     </div>
-                    <form action="{{ route('carrito.eliminar', $id) }}" method="POST" class="mt-4">
+                    <form action="{{ route('carrito.eliminar', $item->id) }}" method="POST" class="mt-4">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="text-red-600 text-sm hover:underline">
@@ -50,7 +50,7 @@
             <div class="bg-white border border-gray-300 rounded-lg shadow-md p-6">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">
                     Subtotal: <span class="text-blue-600">
-                        ${{ number_format(collect($carrito)->sum(fn($p) => $p['precio'] * $p['cantidad']), 2) }}
+                        ${{ number_format($carrito->sum(fn($item) => $item->producto->precio * $item->cantidad), 2) }}
                     </span>
                 </h3>
                 <p class="text-gray-600 mb-4 text-sm">Pueden aplicarse tarifas de importación al finalizar la compra.</p>
